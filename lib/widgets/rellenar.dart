@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trabajo_evaluacion1/main.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class Rellenar extends StatefulWidget {
 
@@ -13,10 +13,17 @@ Rellenar(this.index,this.horas, this.dias);
 }
 
 class _RellenarState extends State<Rellenar> {
-  bool activo = true;
   TextEditingController aulaController = new TextEditingController();
   TextEditingController asignaturaController = new TextEditingController();
   TextEditingController numHoraController = new TextEditingController();
+
+  // create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +35,6 @@ class _RellenarState extends State<Rellenar> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
-            TextFormField(
-              initialValue: '${widget.index}',
-              decoration: InputDecoration(
-                labelText: 'Container numero',
-              )
-            
-            ),
             TextFormField(
               initialValue: '${widget.horas}',
               decoration: InputDecoration(
@@ -68,11 +68,51 @@ class _RellenarState extends State<Rellenar> {
                 labelText: 'Horas',
               ) 
             ),
+            Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20.0),
+                  child: RawMaterialButton(
+                  fillColor: pickerColor,
+                  padding: EdgeInsets.all(20),
+                  shape: CircleBorder(),
+                  onPressed: () {
+                  showDialog(
+                    context: context,
+                    child: AlertDialog(
+                      title: const Text('Pick a color!'),
+                      content: SingleChildScrollView(
+                        child: SlidePicker(
+                                pickerColor: currentColor,
+                                onColorChanged: changeColor,
+                                paletteType: PaletteType.rgb,
+                                enableAlpha: false,
+                                displayThumbColor: true,
+                                showLabel: false,
+                                showIndicator: true,
+                                indicatorBorderRadius:
+                                const BorderRadius.vertical(
+                                top: const Radius.circular(25.0),
+                                ),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: const Text('Got it'),
+                          onPressed: () {
+                            setState(() => currentColor = pickerColor);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                  }
+                  ),
+                )
+            ),
              RaisedButton(
              onPressed: () {
-               print( widget.horas);
-  
-                Navigator.of(context).pop([Colors.white, widget.index, widget.horas,aulaController.text, asignaturaController.text, numHoraController.text]);
+                Navigator.of(context).pop([currentColor, widget.index, widget.horas, aulaController.text, asignaturaController.text, numHoraController.text]);
              },
               textColor: Colors.white,
               padding: const EdgeInsets.all(0.0),
