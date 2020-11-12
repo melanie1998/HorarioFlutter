@@ -1,5 +1,5 @@
-import 'package:evaluacion1/Modelo/horario.dart';
-import 'package:evaluacion1/widgets/rellenar.dart';
+import 'package:trabajo_evaluacion1/Modelos/horario.dart';
+import 'package:trabajo_evaluacion1/widgets/rellenar.dart';
 import 'package:flutter/material.dart';
 class MyApp extends StatelessWidget {
   @override
